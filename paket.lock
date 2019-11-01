@@ -1,3 +1,14 @@
 NUGET
   remote: https://api.nuget.org/v3/index.json
+    Crc32C.NET (1.0.5) - restriction: >= net45
+    FSharp.Control.AsyncSeq (2.0.22) - restriction: || (>= net45) (>= netstandard2.0)
+      FSharp.Core (>= 3.1.2) - restriction: >= net45
+      FSharp.Core (>= 4.3.2) - restriction: && (< net45) (>= netstandard2.0)
     FSharp.Core (4.7)
+    kafunk (0.1.16)
+      FSharp.Control.AsyncSeq (>= 2.0.21) - restriction: || (>= net45) (>= netstandard2.0)
+      FSharp.Core (>= 3.1.2) - restriction: >= net45
+      FSharp.Core (>= 4.3.2) - restriction: && (< net45) (>= netstandard2.0)
+      Snappy.NET (>= 1.1.1.8) - restriction: >= net45
+    Snappy.NET (1.1.1.8) - restriction: >= net45
+      Crc32C.NET (>= 1.0.5)
