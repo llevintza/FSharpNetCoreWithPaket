@@ -19,7 +19,7 @@ let consulKey = consulEnvironmentKeys.Item("CONSUL_KEY")
 let session = consulClient.Session.Create(new SessionEntry()) |> Async.AwaitTask |> Async.RunSynchronously 
 
 (** Checks to see if the current node is the leader **)
-let getLeaderGuid () = consulClient.KV.Get(consulKey) |> Async.AwaitTask |> Async.RunSynchronously |> fun myKv -> myKv.Response.Value |> Encoding.Default.GetString
+let getLeaderGuid () = consulClient.KV.Get(consulKey) |> Async.map(fun myKv -> myKv.Response.Value |> Encoding.Default.GetString)
 
 
 let loadKafkaConfigurations () = async {
@@ -30,8 +30,7 @@ let loadKafkaConfigurations () = async {
     let targetpair = new KVPair(consulKey)
     
     (** Did we acquire the lock? **)
-    let result = consulClient.KV.Get(consulKey) |> Async.AwaitTask |> Async.RunSynchronously 
-    
+    let! result = consulClient.KV.Get(consulKey)     
     
     (** Set the session generated earlier **)
     targetpair.Session <- session.Response
