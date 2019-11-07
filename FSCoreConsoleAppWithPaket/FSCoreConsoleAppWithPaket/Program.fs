@@ -1,55 +1,45 @@
-﻿// Learn more about F# at http://fsharp.org
-
-open System
+﻿open System
 open System.Text
 open Consul
 
-let consulEnvironmentKeys = 
-    Environment.GetEnvironmentVariables()
-    |> Seq.cast<System.Collections.DictionaryEntry>
-    |> Seq.map (fun d -> d.Key :?> string, d.Value :?> string)
-    |> Seq.where (fun (k,_) -> k.StartsWith("CONSUL_"))
-    |> dict
+let consulKey = Environment.GetEnvironmentVariable "CONSUL_KAFKA_CONFIG_KEY"
 
-(** Unique identifier for this service **)
-let serviceGuid = Guid.NewGuid().ToString()
-let consulClient = new ConsulClient()
-let consulKey = consulEnvironmentKeys.Item("CONSUL_KEY")
-(** The Consul session we'll use for setting and releasing locks **)
-let session = consulClient.Session.Create(new SessionEntry()) |> Async.AwaitTask |> Async.RunSynchronously 
+let loadKafkaConfigurations (key:string) = async {
+    printfn "[TRACE] - Trying to load consul configurations!"
+    use consulClient = new ConsulClient()
+    let! queryResult = 
+        consulClient.KV.Get(key) 
+        |> Async.AwaitTask
 
-(** Checks to see if the current node is the leader **)
-let getLeaderGuid () = consulClient.KV.Get(consulKey) |> Async.AwaitTask |> Async.RunSynchronously |> fun myKv -> myKv.Response.Value |> Encoding.Default.GetString
+    let responseResult =
+        match queryResult.StatusCode with
+        | Net.HttpStatusCode.OK -> 
+            match queryResult.Response with
+            | (kvPair) -> Some(Encoding.UTF8.GetString(kvPair.Value))
+            | _ -> None
+        | _ -> None 
 
+    let logMessage = 
+        match responseResult with
+        | Some(x) -> sprintf "Successfully read the configurations from consul with value %s" x
+        | None -> sprintf "Failed to read consul key %s" key
 
-let loadKafkaConfigurations () = async {
-    (** Console **)
-    Console.WriteLine("Trying to load consul config!")
+    printfn "[TRACE] - %s" logMessage
 
-    //(** Handle for the leadership key **)
-    let targetpair = new KVPair(consulKey)
-    
-    (** Did we acquire the lock? **)
-    let result = consulClient.KV.Get(consulKey) |> Async.AwaitTask |> Async.RunSynchronously 
-    
-    
-    (** Set the session generated earlier **)
-    targetpair.Session <- session.Response
-    //targetpair.Value <- System.Text.Encoding.UTF8.GetString(result.Response.Value)
-    System.Text.Encoding.UTF8.GetString(result.Response.Value)
-
-    (** Print the result of the election **)
-    //match result.Response with 
-    //| true  -> Console.WriteLine("I succeeded :o)")
-    //| false -> Console.WriteLine("I failed :o(")  
-    //targetpair
+    return responseResult
 }
 
 [<EntryPoint>]
 let main argv =
     
-    loadKafkaConfigurations()
-        //|> Async.AwaitTask
+    let config = 
+        loadKafkaConfigurations consulKey
         |> Async.RunSynchronously
-    printfn "Hello World from F#!"
+
+    let log = 
+        match config with
+        | Some validConfig -> sprintf "Kafka configuration is %s" validConfig
+        | None -> sprintf "Could not retrieve Kafka configurations from consul"
+
+    printfn "[TRACE] - %s" log
     0 // return an integer exit code
