@@ -1,0 +1,10 @@
+[
+  {
+    "Key": "CONSUL_KAFKA_CONFIG_KEY",
+    "Value": "api/settings/kafka"
+  },
+  {
+    "Key": "CONSUL_HOST",
+    "Value": "http://127.0.0.1:8500/v1/kv"
+  }
+]

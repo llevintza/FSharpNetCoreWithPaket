@@ -1,0 +1,19 @@
+{
+  "endpoint": "",
+  "topics": [
+    {
+      "name": "main-topic",
+      "consumerGroups": [
+        "consumerGroup1",
+        "consumerGroup2"
+      ]
+    },
+    {
+      "name": "secondary-topic",
+      "consumerGroups": [
+        "consumerGroup1",
+        "consumerGroup2"
+      ]
+    }
+  ]
+}

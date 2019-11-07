@@ -8,7 +8,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".paket", ".paket", "{799F1F
 		..\paket.dependencies = ..\paket.dependencies
 	EndProjectSection
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSCoreConsoleAppWithPaket", "FSCoreConsoleAppWithPaket\FSCoreConsoleAppWithPaket.fsproj", "{6B1116C4-7DA4-4EE8-9970-E842051D0E29}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "FSCoreConsoleAppWithPaket", "FSCoreConsoleAppWithPaket\FSCoreConsoleAppWithPaket.fsproj", "{6B1116C4-7DA4-4EE8-9970-E842051D0E29}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configurations", "Configurations", "{4BE1DC6C-7F8D-4972-8B50-9C53B0399842}"
+	ProjectSection(SolutionItems) = preProject
+		EnvironmentVariablesConfiguration.json = EnvironmentVariablesConfiguration.json
+		KafkaConfiguration.json = KafkaConfiguration.json
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
