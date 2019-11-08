@@ -2,5 +2,6 @@ source "C:\Program Files (x86)\Microsoft SDKs\NuGetPackages\"
 source https://api.nuget.org/v3/index.json
 
 nuget FSharp.Core
-nuget kafunk
+nuget FSharp.Data 3.3.2
+nuget Kafunk
 nuget Consul
