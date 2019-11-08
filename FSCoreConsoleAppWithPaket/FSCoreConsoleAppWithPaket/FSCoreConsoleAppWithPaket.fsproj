@@ -5,6 +5,7 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="KafkaConfig.fs" />
     <Compile Include="KafkaConsumer.fs" />
     <Compile Include="KafkaProducer.fs" />
     <Compile Include="Program.fs" />
