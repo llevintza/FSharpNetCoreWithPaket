@@ -2,13 +2,10 @@
 
 open System
 open System.Text
-
 open FSharp.Data
-
 open Consul
 
-let consulKey = Environment.GetEnvironmentVariable "CONSUL_KAFKA_CONFIG_KEY"
-
+let private consulKey = Environment.GetEnvironmentVariable "CONSUL_KAFKA_CONFIG_KEY"
 
 type KafkaConfiguration = JsonProvider<"""{
 "endpoint": "",
@@ -31,7 +28,7 @@ type KafkaConfiguration = JsonProvider<"""{
 }
 """>
 
-let loadKafkaConfigurations (key:string) = async {
+let private loadKafkaConfigurations (key:string) = async {
     printfn "[TRACE] - Trying to load consul configurations!"
     use consulClient = new ConsulClient()
     let! queryResult = 
