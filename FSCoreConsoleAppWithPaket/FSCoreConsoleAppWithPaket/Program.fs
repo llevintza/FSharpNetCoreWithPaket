@@ -10,10 +10,5 @@ let main argv =
         KafkaConfig.loadConfig
         |> Async.RunSynchronously
 
-    let log = 
-        match config with
-        | Some validConfig -> sprintf "Kafka configuration is %A" validConfig
-        | None -> sprintf "Could not retrieve Kafka configurations from consul"
-
-    printfn "[TRACE] - %s" log
+    printfn "[TRACE] - %A" config
     0 // return an integer exit code

@@ -39,9 +39,15 @@ let private loadKafkaConfigurations (key:string) = async {
         match queryResult.StatusCode with
         | Net.HttpStatusCode.OK -> 
             match queryResult.Response with
-            | (kvPair) -> Some(KafkaConfiguration.Parse(Encoding.UTF8.GetString(kvPair.Value)))
-            | _ -> None
-        | _ -> None 
+            | (kvPair) -> 
+                printfn "[TRACE] - Successfully read the configurations from consul with value %A" kvPair
+                Some(KafkaConfiguration.Parse(Encoding.UTF8.GetString(kvPair.Value)))
+            | _ -> 
+                printfn "[ERROR] - Failed to read consul key %s" key
+                None
+        | _ -> 
+            printfn "[ERROR] - Failed to connect to the Consul server"
+            None
 
     let logMessage = 
         match responseResult with
@@ -53,6 +59,4 @@ let private loadKafkaConfigurations (key:string) = async {
     return responseResult
 }
 
-let loadConfig  = async {
-    return! loadKafkaConfigurations consulKey
-}
+let loadConfig = loadKafkaConfigurations consulKey
