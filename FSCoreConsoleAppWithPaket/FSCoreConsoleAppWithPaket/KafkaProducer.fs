@@ -3,7 +3,17 @@
 open Kafunk
 open System
 
-let conn = Kafka.connHost "existential-host"
+
+let conn = async {
+    let! config = KafkaConfig.loadConfig
+    
+    return 
+        match config with
+        | Some(cfg) -> 
+            let t = cfg.Endpoint.JsonValue.ToString()
+            Kafka.connHost t
+        | None -> failwith ""
+}
 
 /// Configuration.
 let producerConfig = 
@@ -29,8 +39,12 @@ let producerConfig =
 
 
 /// Create a producer.
-let producer = 
-  Producer.create conn producerConfig
+let producer(configOption: Option<KafkaConn>) = async {
+    let! connection = conn
+    let! p = Producer.createAsync connection producerConfig
+
+    return p
+  }
 
 
 /// Create a message.
