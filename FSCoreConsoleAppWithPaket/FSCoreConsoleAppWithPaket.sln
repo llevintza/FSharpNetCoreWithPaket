@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".paket", ".paket", "{799F1FF3-8C91-46F4-89CB-BBBD445E1412}"
 	ProjectSection(SolutionItems) = preProject
 		..\paket.dependencies = ..\paket.dependencies
+		..\paket.lock = ..\paket.lock
 	EndProjectSection
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "FSCoreConsoleAppWithPaket", "FSCoreConsoleAppWithPaket\FSCoreConsoleAppWithPaket.fsproj", "{6B1116C4-7DA4-4EE8-9970-E842051D0E29}"
