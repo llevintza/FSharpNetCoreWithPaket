@@ -5,3 +5,4 @@ nuget FSharp.Core
 nuget FSharp.Data 3.3.2
 nuget Kafunk
 nuget Consul
+nuget FSharpx.Async 1.14.1
